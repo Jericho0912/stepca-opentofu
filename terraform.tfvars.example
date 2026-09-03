@@ -1,0 +1,51 @@
+# =============================================================================
+# OpenTofu Variables Configuration (Example)
+# Copy this file to 'terraform.tfvars' and customize for your environment.
+# =============================================================================
+
+# Target AWS Region
+aws_region = "us-east-1"
+
+# Environment identifier (e.g., prod, staging, dev)
+environment = "prod"
+
+# VPC & Networking Configuration
+# Leave as null to automatically use the default VPC and its default subnet
+vpc_id    = null
+subnet_id = null
+
+# Internal CIDR blocks permitted to communicate with Step-CA (443) and FreeRADIUS (1812/1813)
+# Replace with your corporate VPC, WireGuard/Tailscale VPN, or office IP ranges
+allowed_cidr_blocks = [
+  "10.0.0.0/8",
+  "172.16.0.0/12",
+  "192.168.0.0/16"
+]
+
+# Compute Specification (Nitro MicroVM on AWS Graviton)
+instance_type = "t4g.micro"
+
+# Optional: Override AMI if using custom hardened base image (otherwise auto-selects Ubuntu 24.04 Noble Minimal)
+# ami_id = "ami-xxxxxxxxxxxxxxxxx"
+
+# Persistent Encrypted Storage (GiB) - Stores CA keys and FreeRADIUS configuration
+ebs_volume_size = 10
+
+# Optional Customer-Managed KMS Key ARN for EBS encryption (null uses AWS default EBS encryption key)
+# kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/your-key-uuid"
+
+# Certificate Authority Identification
+ca_name = "Internal Infrastructure Root CA"
+ca_dns  = "ca.internal.lan"
+
+# Optional Break-Glass SSH Public Key (SSM Session Manager is used by default without opening port 22)
+# ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... devops-admin"
+
+# Organizational Resource Tags
+tags = {
+  Project     = "Internal-PKI-RADIUS"
+  ManagedBy   = "OpenTofu"
+  Environment = "prod"
+  Role        = "Security-Infrastructure"
+  Compliance  = "Zero-Trust-Internal"
+}

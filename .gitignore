@@ -1,0 +1,42 @@
+# OpenTofu / Terraform local cache and state
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+crash.*.log
+
+# Plan files
+*.tfplan
+*.plan
+
+# Sensitive variable definition files
+*.tfvars
+*.tfvars.json
+!terraform.tfvars.example
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI configuration and credentials
+.terraformrc
+terraform.rc
+
+# Local secrets, keys, and environment files
+.env
+*.pem
+*.key
+*.crt
+id_rsa*
+id_ed25519*
+
+# OS and Editor artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~

@@ -80,7 +80,6 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 
     principals {
       type        = "Service"
-      descriptors = null
       identifiers = ["ec2.amazonaws.com"]
     }
   }

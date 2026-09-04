@@ -135,13 +135,22 @@ $DOMAIN {
 }
 EOF_CADDY
 else
+  # Generate self-signed TLS certificate with SAN for IP address access
+  PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4 || true)
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout "$STACK_DIR/server.key" \
+    -out "$STACK_DIR/server.crt" \
+    -subj "/CN=$${PUBLIC_IP:-localhost}" \
+    -addext "subjectAltName=IP:$${PUBLIC_IP:-127.0.0.1},IP:127.0.0.1,DNS:localhost"
+  chmod 644 "$STACK_DIR/server.crt" "$STACK_DIR/server.key"
+
   cat << 'EOF_CADDY' > "$STACK_DIR/Caddyfile"
 :80 {
     reverse_proxy anythingllm:3001
 }
 
 :443 {
-    tls internal
+    tls /etc/caddy/server.crt /etc/caddy/server.key
     reverse_proxy anythingllm:3001
 }
 EOF_CADDY
@@ -181,6 +190,8 @@ services:
       - "443:443"
     volumes:
       - /opt/anythingllm/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/anythingllm/server.crt:/etc/caddy/server.crt:ro
+      - /opt/anythingllm/server.key:/etc/caddy/server.key:ro
       - /mnt/anythingllm/caddy_data:/data
       - /mnt/anythingllm/caddy_config:/config
     depends_on:

@@ -1,0 +1,27 @@
+# Target AWS Region and Profile
+aws_region  = "ap-southeast-1"
+aws_profile = "swarm"
+environment = "dev"
+
+# Auto-detect default VPC and subnet in ap-southeast-1
+vpc_id    = null
+subnet_id = null
+
+# Graviton Compute sizing
+instance_type   = "t4g.small" # 2 vCPU, 2 GB RAM (~$12/mo)
+ebs_volume_size = 20          # 20 GiB gp3 for documents and vector DB
+
+# Optional: Add a custom domain if you have a DNS record pointed to the server
+# domain_name = "ai.mycompany.com"
+
+# Allow team members from any internet IP (protected by AnythingLLM user authentication)
+allowed_ingress_cidrs = [
+  "0.0.0.0/0"
+]
+
+tags = {
+  Project     = "AnythingLLM-Stack"
+  ManagedBy   = "OpenTofu"
+  Environment = "dev"
+  Service     = "AI-Knowledge-Base"
+}

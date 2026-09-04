@@ -196,10 +196,10 @@ services:
       # Step-CA listens internally on 9000; map directly to host port 443
       - "443:9000"
     environment:
-      - DOCKER_STEP_CA_INIT=true
-      - STEP_CA_NAME=${ca_name}
-      - STEP_CA_DNS=${ca_dns}
-      - STEP_CA_PASSWORD=${ca_password}
+      - DOCKER_STEPCA_INIT_NAME=${ca_name}
+      - DOCKER_STEPCA_INIT_DNS_NAMES=${ca_dns},127.0.0.1,localhost
+      - DOCKER_STEPCA_INIT_PASSWORD=${ca_password}
+      - DOCKER_STEPCA_INIT_ACME=true
     volumes:
       - /mnt/step-ca/step:/home/step
     healthcheck:
